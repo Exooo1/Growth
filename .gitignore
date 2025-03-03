@@ -2,6 +2,11 @@
 
 # dependencies
 node_modules/
+.idea/
+android/
+ios/
+yarn.lock
+
 
 # Expo
 .expo/

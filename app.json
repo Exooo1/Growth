@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "growth",
-    "slug": "growth",
+    "name": "Growth",
+    "slug": "Growth",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -15,7 +15,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.exooo1.Growth"
     },
     "web": {
       "bundler": "metro",
@@ -36,6 +37,18 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "32cb9872-11f8-49d9-a91a-67c3090b3c53"
+      }
+    },
+    "owner": "exoool",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
   }
 }
