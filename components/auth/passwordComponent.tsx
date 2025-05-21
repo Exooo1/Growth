@@ -1,19 +1,29 @@
-import { blStyles } from "@/styles/common/bl-styles"
-import { COMMON_COLOR_GREEN, TEXT_COLOR_GREY } from "@/styles/constants/color-cst"
-import { signInStyles } from "@/styles/screens/auth/signIn-styles"
-import { useEffect, useState } from "react"
-import { TextInput, TouchableOpacity, View } from "react-native"
+import { blStyles } from "@/styles/common/bl-styles";
+import {
+  COMMON_COLOR_GREEN,
+  TEXT_COLOR_GREY,
+} from "@/styles/constants/color-cst";
+import { signInStyles } from "@/styles/screens/auth/signIn-styles";
+import { PasswordComponentProps } from "@/types/components/passwordComponents-types";
+import { useEffect, useState } from "react";
+import { TextInput, TouchableOpacity, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSequence,
   withSpring,
-  withTiming
-} from "react-native-reanimated"
+  withTiming,
+} from "react-native-reanimated";
 
-import Svg, { Path } from "react-native-svg"
+import Svg, { Path } from "react-native-svg";
 
-export const PasswordComponent = () => {
+export const PasswordComponent = ({
+  onFocus,
+  onBlur,
+  value,
+  onChangeText,
+  viewStyle,
+}: PasswordComponentProps) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(true);
   const scale = useSharedValue(0);
 
@@ -37,7 +47,7 @@ export const PasswordComponent = () => {
         damping: 10,
         velocity: -20,
         stiffness: 60,
-        mass: 0.5
+        mass: 0.5,
       })
     );
   };
@@ -51,16 +61,26 @@ export const PasswordComponent = () => {
   }, []);
 
   return (
-    <View style={[blStyles.blStCnRow, signInStyles.passwordComponent, { width: '100%', gap: 10 }]}>
+    <View
+      style={[
+        blStyles.blStCnRow,
+        signInStyles.passwordComponent,
+        { width: "100%", gap: 10, ...viewStyle },
+      ]}
+    >
       <TextInput
+        onFocus={onFocus}
+        onBlur={onBlur}
+        value={value}
+        onChangeText={onChangeText}
         placeholder="Password"
         secureTextEntry={isPasswordVisible}
         placeholderTextColor={TEXT_COLOR_GREY}
         style={{
-          width: '85%',
+          width: "85%",
           height: 60,
-          color: 'white',
-          fontFamily: 'lato'
+          color: "white",
+          fontFamily: "lato",
         }}
       />
       <TouchableOpacity onPress={togglePasswordVisibility}>
@@ -81,5 +101,5 @@ export const PasswordComponent = () => {
         </Animated.View>
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
