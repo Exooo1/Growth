@@ -1,11 +1,11 @@
 import { inputStyles } from "@/styles/components/inputs-styles";
 import { BACKGROUND_COLOR_SCREEN } from "@/styles/constants/color-cst";
-import { DEFAULT_WIDTH_HEIGHT_SCREEN } from "@/styles/constants/size-cst";
+import { blStyles } from "@/styles/common/bl-styles";
 import { StyleSheet } from "react-native";
 
 export const signInStyles = StyleSheet.create({
   container: {
-    ...DEFAULT_WIDTH_HEIGHT_SCREEN,
+    ...blStyles.defaultContainerWidthHeight,
     backgroundColor: BACKGROUND_COLOR_SCREEN,
   },
   header: {

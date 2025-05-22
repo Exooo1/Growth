@@ -1,3 +1,4 @@
+import { blStyles } from "@/styles/common/bl-styles";
 import { StyleSheet } from "react-native";
 import { BACKGROUND_COLOR_SCREEN_ERROR } from "../constants/color-cst";
 
@@ -9,8 +10,7 @@ export const errorsStyles = StyleSheet.create({
     zIndex: 1,
   },
   content: {
-    width: "100%",
-    height: "100%",
+    ...blStyles.defaultContainerWidthHeight,
   },
   blError: {
     marginTop: "1%",

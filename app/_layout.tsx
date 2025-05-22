@@ -1,27 +1,9 @@
-import { router, Stack } from "expo-router";
-import {
-  BACKGROUND_COLOR_SCREEN,
-  COMMON_COLOR_GREEN,
-} from "@/styles/constants/color-cst";
-import { useErrorsStore } from "@/store/error-store";
+import { ButtonBack } from "@/components/buttons/buttonBack";
 import { Errors } from "@/components/errors";
-import { TouchableOpacity, Text, View, Platform } from "react-native";
-
-const CustomHeader = () => (
-  <View
-    style={{
-      height: Platform.OS === "ios" ? 140 : 60,
-      backgroundColor: BACKGROUND_COLOR_SCREEN,
-      paddingLeft: "3%",
-      justifyContent: "center",
-      position: "absolute",
-    }}
-  >
-    <TouchableOpacity onPress={router.back} style={{ marginLeft: 10 }}>
-      <Text style={{ color: COMMON_COLOR_GREEN, fontSize: 16 }}>Back</Text>
-    </TouchableOpacity>
-  </View>
-);
+import { useErrorsStore } from "@/store/error-store";
+import { BACKGROUND_COLOR_SCREEN } from "@/styles/constants/color-cst";
+import { Stack } from "expo-router";
+import { View } from "react-native";
 
 export default function Layout() {
   const errors = useErrorsStore((state) => state.errors);
@@ -40,7 +22,7 @@ export default function Layout() {
         <Stack.Screen
           name="auth/verifyEmail"
           options={{
-            header: () => <CustomHeader />,
+            header: () => <ButtonBack name="Sign Up" />,
             statusBarBackgroundColor: BACKGROUND_COLOR_SCREEN,
             headerShown: true,
           }}
@@ -48,7 +30,7 @@ export default function Layout() {
         <Stack.Screen
           name="auth/forgotPassword"
           options={{
-            header: () => <CustomHeader />,
+            header: () => <ButtonBack name="Sign In" />,
             statusBarBackgroundColor: BACKGROUND_COLOR_SCREEN,
             headerShown: true,
           }}

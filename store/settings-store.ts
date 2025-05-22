@@ -1,13 +1,10 @@
-import {create} from "zustand";
-import {ISettings} from "@/types/store/setttings-types";
+import { create } from "zustand";
+import { ISettings } from "@/types/store/setttings-types";
+import { Dimensions } from "react-native";
+import Constants from "expo-constants";
 
 export const useSettingsStore = create<ISettings>((set) => ({
-    widthScreen: 0,
-    heightScreen: 0,
-    statusBarHeight: 0,
-    setWHScreen: (widthScreen: number, heightScreen: number, statusBarHeight: number) => set({
-        widthScreen,
-        heightScreen,
-        statusBarHeight
-    }),
-}))
+  widthScreen: Dimensions.get("window").width,
+  heightScreen: Dimensions.get("window").height,
+  statusBarHeight: Constants.statusBarHeight ?? 0,
+}));

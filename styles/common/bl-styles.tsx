@@ -1,6 +1,10 @@
 import { StyleSheet } from "react-native";
+import { DEFAULT_WIDTH_HEIGHT_SCREEN } from "../constants/size-cst";
 
 export const blStyles = StyleSheet.create({
+  defaultContainerWidthHeight: {
+    ...DEFAULT_WIDTH_HEIGHT_SCREEN,
+  },
   blCnRow: {
     display: "flex",
     justifyContent: "center",

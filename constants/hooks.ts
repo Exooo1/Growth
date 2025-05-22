@@ -1,6 +1,5 @@
 import { SignInFormData, ValidationRules } from "@/types/hooks/form-types";
 import {
-  validateConfirmPassword,
   validateEmail,
   validatePassword,
   validateRequired,
@@ -36,5 +35,5 @@ export const FORGOT_PASSWORD_VALIDATION_RULES: ValidationRules = {
   email: [validateEmail],
   code: [validateRequired],
   newPassword: [validatePassword],
-  confirmPassword: [validateConfirmPassword],
+  // confirmPassword: [validateConfirmPassword],
 };

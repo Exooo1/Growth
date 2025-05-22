@@ -1,10 +1,9 @@
 import { StyleSheet } from "react-native";
 import { BACKGROUND_COLOR_SCREEN } from "@/styles/constants/color-cst";
-
+import { blStyles } from "@/styles/common/bl-styles";
 export const forgotPasswordStyles = StyleSheet.create({
   container: {
-    width: "100%",
-    height: "100%",
+    ...blStyles.defaultContainerWidthHeight,
     backgroundColor: BACKGROUND_COLOR_SCREEN,
   },
 });
