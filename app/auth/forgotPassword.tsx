@@ -1,6 +1,6 @@
 import logo from "@/assets/images/logo.webp";
 import { VerificationCodeInput } from "@/components/auth/verificationCodeInput";
-import { GradientButtonEnter } from "@/components/buttons/gradientButton";
+import { GradientButtonEnter } from "@/components/buttons/GradientButton";
 import { InputEnter } from "@/components/inputs/inputEnter";
 import { FORGOT_PASSWORD_VALIDATION_RULES } from "@/constants/hooks";
 import { Routes } from "@/constants/routes";

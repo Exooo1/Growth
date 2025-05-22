@@ -17,13 +17,14 @@ import Animated, {
 } from "react-native-reanimated";
 import { ERRORS_COLOR_GREEN } from "@/styles/constants/color-cst";
 import { ERRORS_COLOR_RED } from "@/styles/constants/color-cst";
+import { IContentError } from "@/types/components/errors-types";
 
-export const ContentError = ({
+export const ContentError: React.FC<IError & IContentError> = ({
   text,
   type,
   id,
   removeError,
-}: IError & { removeError: (id: string) => void }) => {
+}) => {
   const [count, setCount] = useState(5);
   const [progress, setProgress] = useState(0);
   const translateX = useSharedValue(-200);

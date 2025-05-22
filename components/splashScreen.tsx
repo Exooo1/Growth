@@ -7,7 +7,6 @@ import {
   Dimensions,
   DimensionValue,
   ImageSourcePropType,
-  PixelRatio,
   View,
 } from "react-native";
 import Animated, {
@@ -22,7 +21,7 @@ import Animated, {
 import logo from "../assets/images/logo.webp";
 
 export const SplashScreen = () => {
-  const sizeImg = PixelRatio.getPixelSizeForLayoutSize(45);
+  const logoSize = "30%";
   const sizeCircle = useSharedValue(0);
   const scaleCircle = useSharedValue(1);
   const scale = useSharedValue(1);
@@ -80,8 +79,9 @@ export const SplashScreen = () => {
     <View style={[blStyles.blCnRow, splashScreenStyles.container]}>
       <Animated.View style={[splashScreenStyles.startApp, animatedCircle]} />
       <Animated.Image
-        style={[{ width: sizeImg, height: sizeImg }, animatedStyle]}
+        style={[{ width: logoSize, height: logoSize }, animatedStyle]}
         source={logo as ImageSourcePropType}
+        resizeMode="contain"
       />
     </View>
   );

@@ -6,19 +6,13 @@ import {
 } from "@/styles/constants/color-cst";
 import { LinearGradient } from "expo-linear-gradient";
 import { Text, TouchableOpacity } from "react-native";
+import { IGradientButtonEnter } from "@/types/components/buttons-types";
 
-interface GradientButtonProps {
-  onPress: () => void;
-  title: string;
-  loading?: boolean;
-  disabled?: boolean;
-}
-
-export const GradientButtonEnter = ({
+export const GradientButtonEnter: React.FC<IGradientButtonEnter> = ({
   onPress,
   title,
   disabled,
-}: GradientButtonProps) => {
+}) => {
   return (
     <TouchableOpacity
       disabled={disabled}

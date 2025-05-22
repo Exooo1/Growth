@@ -1,17 +1,13 @@
 import { inputStyles } from "@/styles/components/inputs-styles";
 import { TEXT_COLOR_GREY } from "@/styles/constants/color-cst";
-import { StyleProp, TextInput, TextInputProps, TextStyle } from "react-native";
+import { IInputEnterProps } from "@/types/components/inputs-types";
+import { TextInput } from "react-native";
 
-interface InputEnterProps extends Omit<TextInputProps, "style"> {
-  placeholder: string;
-  style?: StyleProp<TextStyle>;
-}
-
-export const InputEnter = ({
+export const InputEnter: React.FC<IInputEnterProps> = ({
   placeholder,
   style,
   ...props
-}: InputEnterProps) => {
+}) => {
   const anySettings = {
     returnKeyType: "done",
   } as const;

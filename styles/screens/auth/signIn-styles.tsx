@@ -7,8 +7,6 @@ export const signInStyles = StyleSheet.create({
   container: {
     ...DEFAULT_WIDTH_HEIGHT_SCREEN,
     backgroundColor: BACKGROUND_COLOR_SCREEN,
-    width: "100%",
-    height: "100%",
   },
   header: {
     width: "100%",

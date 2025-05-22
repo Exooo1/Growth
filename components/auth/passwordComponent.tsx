@@ -3,8 +3,8 @@ import {
   COMMON_COLOR_GREEN,
   TEXT_COLOR_GREY,
 } from "@/styles/constants/color-cst";
-import { signInStyles } from "@/styles/screens/auth/signIn-styles";
-import { PasswordComponentProps } from "@/types/components/passwordComponents-types";
+import { commonAuthStyles } from "@/styles/screens/auth/common-auth-styles";
+import { IPasswordComponent } from "@/types/components/auth-types";
 import { useEffect, useState } from "react";
 import { TextInput, TouchableOpacity, View } from "react-native";
 import Animated, {
@@ -14,16 +14,15 @@ import Animated, {
   withSpring,
   withTiming,
 } from "react-native-reanimated";
-
 import Svg, { Path } from "react-native-svg";
 
-export const PasswordComponent = ({
+export const PasswordComponent: React.FC<IPasswordComponent> = ({
   onFocus,
   onBlur,
   value,
   onChangeText,
   viewStyle,
-}: PasswordComponentProps) => {
+}) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(true);
   const scale = useSharedValue(0);
 
@@ -64,7 +63,7 @@ export const PasswordComponent = ({
     <View
       style={[
         blStyles.blStCnRow,
-        signInStyles.passwordComponent,
+        commonAuthStyles.passwordComponent,
         { width: "100%", gap: 10, ...viewStyle },
       ]}
     >
