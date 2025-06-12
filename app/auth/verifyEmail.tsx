@@ -1,15 +1,6 @@
-import { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ImageSourcePropType,
-  Image,
-  PixelRatio,
-  GestureResponderEvent,
-  Keyboard,
-} from "react-native";
-import { router } from "expo-router";
+import logo from "@/assets/images/logo.webp";
+import { VerificationCodeInput } from "@/components/auth/verificationCodeInput";
+import { GradientButtonEnter } from "@/components/buttons/GradientButton";
 import { Routes } from "@/constants/routes";
 import { blStyles } from "@/styles/common/bl-styles";
 import { textStyles } from "@/styles/common/text-styles";
@@ -18,9 +9,17 @@ import {
   TEXT_COLOR_GREY,
 } from "@/styles/constants/color-cst";
 import { verifyEmailStyles } from "@/styles/screens/auth/verifyEmail-styles";
-import logo from "@/assets/images/logo.webp";
-import { GradientButtonEnter } from "@/components/buttons/gradientButton";
-import { VerificationCodeInput } from "@/components/auth/verificationCodeInput";
+import { router } from "expo-router";
+import { useState } from "react";
+import {
+  GestureResponderEvent,
+  Image,
+  ImageSourcePropType,
+  Keyboard,
+  PixelRatio,
+  Text,
+  View,
+} from "react-native";
 
 export default function VerifyEmail() {
   const [code, setCode] = useState<string>("");
@@ -72,10 +71,7 @@ export default function VerifyEmail() {
         </View>
       </View>
 
-      <VerificationCodeInput
-        onCodeComplete={handleCodeComplete}
-        containerStyle={{ width: "85%" }}
-      />
+      <VerificationCodeInput onCodeComplete={handleCodeComplete} />
 
       <View style={{ width: "85%" }}>
         <GradientButtonEnter

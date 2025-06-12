@@ -1,5 +1,4 @@
 import { PasswordComponent } from "@/components/auth/passwordComponent";
-import { GradientButtonEnter } from "@/components/buttons/gradientButton";
 import { InputEnter } from "@/components/inputs/inputEnter";
 import {
   INITIAL_SIGNUP_STATE,
@@ -37,6 +36,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import logo from "../../assets/images/logo.webp";
+import { GradientButtonEnter } from "@/components/buttons/GradientButton";
 
 export default function SignUp() {
   const addError = useErrorsStore((state) => state.addError);

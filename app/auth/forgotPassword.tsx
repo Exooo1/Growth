@@ -3,7 +3,6 @@ import { VerificationCodeInput } from "@/components/auth/verificationCodeInput";
 import { GradientButtonEnter } from "@/components/buttons/GradientButton";
 import { InputEnter } from "@/components/inputs/inputEnter";
 import { FORGOT_PASSWORD_VALIDATION_RULES } from "@/constants/hooks";
-import { Routes } from "@/constants/routes";
 import { useForm } from "@/hooks/useForm";
 import { useErrorsStore } from "@/store/error-store";
 import { useSettingsStore } from "@/store/settings-store";
@@ -16,7 +15,6 @@ import {
 } from "@/styles/constants/color-cst";
 import { forgotPasswordStyles } from "@/styles/screens/auth/forgotPassword-styles";
 import { ETypeError } from "@/types/store/errors-types";
-import { router } from "expo-router";
 import { useState } from "react";
 import {
   GestureResponderEvent,
@@ -25,7 +23,6 @@ import {
   Keyboard,
   PixelRatio,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import Animated, {
@@ -193,7 +190,6 @@ export default function ForgotPassword() {
               <>
                 <VerificationCodeInput
                   onCodeComplete={handleVerificationComplete}
-                  containerStyle={{ marginBottom: 20 }}
                 />
                 <GradientButtonEnter
                   disabled={

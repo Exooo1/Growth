@@ -1,5 +1,5 @@
 import { PasswordComponent } from "@/components/auth/passwordComponent";
-import { GradientButtonEnter } from "@/components/buttons/gradientButton";
+import { GradientButtonEnter } from "@/components/buttons/GradientButton";
 import { InputEnter } from "@/components/inputs/inputEnter";
 import {
   INITIAL_SIGNIN_STATE,
