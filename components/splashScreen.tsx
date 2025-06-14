@@ -39,7 +39,7 @@ export const SplashScreen = () => {
   }, []);
 
   const handleNavigate = () => {
-    navigate.push(Routes.SignIn);
+    navigate.push(Routes.Profile);
   };
 
   const startAppAnimation = () => {

@@ -3,6 +3,8 @@ import { VerificationCodeInput } from "@/components/auth/verificationCodeInput";
 import { GradientButtonEnter } from "@/components/buttons/GradientButton";
 import { InputEnter } from "@/components/inputs/inputEnter";
 import { FORGOT_PASSWORD_VALIDATION_RULES } from "@/constants/hooks";
+import { LOGO_SIZE } from "@/constants/pages";
+import { Routes } from "@/constants/routes";
 import { useForm } from "@/hooks/useForm";
 import { useErrorsStore } from "@/store/error-store";
 import { useSettingsStore } from "@/store/settings-store";
@@ -14,7 +16,9 @@ import {
   TEXT_COLOR_GREY,
 } from "@/styles/constants/color-cst";
 import { forgotPasswordStyles } from "@/styles/screens/auth/forgotPassword-styles";
+import { signInStyles } from "@/styles/screens/auth/signIn-styles";
 import { ETypeError } from "@/types/store/errors-types";
+import { router } from "expo-router";
 import { useState } from "react";
 import {
   GestureResponderEvent,
@@ -25,11 +29,6 @@ import {
   Text,
   View,
 } from "react-native";
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
 
 enum ForgotPasswordStep {
   EMAIL,
@@ -42,12 +41,11 @@ export default function ForgotPassword() {
     ForgotPasswordStep.EMAIL
   );
   const addError = useErrorsStore((state) => state.addError);
-  const sizeImg = PixelRatio.getPixelSizeForLayoutSize(45);
+  const sizeImg = PixelRatio.getPixelSizeForLayoutSize(LOGO_SIZE);
   const statusBarHeight = useSettingsStore((state) => state.statusBarHeight);
   const [currentFocus, setCurrentFocus] = useState<string>("");
-  const height = useSharedValue(30);
 
-  const { form, setFieldValue, isValid } = useForm(
+  const { form, setFieldValue, validateFields } = useForm(
     {
       email: { value: "", error: "" },
       code: { value: "", error: "" },
@@ -57,35 +55,27 @@ export default function ForgotPassword() {
     FORGOT_PASSWORD_VALIDATION_RULES
   );
 
-  const animatedFocusBlur = useAnimatedStyle(() => {
-    return {
-      height: withTiming(`${height.value}%`, { duration: 400 }),
-    };
-  });
-
-  const handleFocus = () => (height.value = 20);
   const handleBlur = () => {
-    height.value = 30;
     setCurrentFocus("");
   };
+
   const handleFocusInput = (input: string) => {
     setCurrentFocus(input);
-    handleFocus();
   };
 
   const handleSubmitEmail = () => {
-    const errors = isValid();
-    if (errors) {
-      addError(errors, ETypeError.ERROR);
+    const error = validateFields(["email"]);
+    if (error) {
+      addError(error, ETypeError.ERROR);
       return;
     }
     setStep(ForgotPasswordStep.VERIFY_CODE);
   };
 
   const handleSubmitCode = () => {
-    const errors = isValid();
-    if (errors) {
-      addError(errors, ETypeError.ERROR);
+    const error = validateFields(["code"]);
+    if (error) {
+      addError(error, ETypeError.ERROR);
       return;
     }
     setStep(ForgotPasswordStep.RESET_PASSWORD);
@@ -96,28 +86,27 @@ export default function ForgotPassword() {
   };
 
   const handleResetPassword = () => {
-    const errors = isValid();
-    if (errors) {
-      addError(errors, ETypeError.ERROR);
+    const error = validateFields(["newPassword", "confirmPassword"]);
+    if (error) {
+      addError(error, ETypeError.ERROR);
       return;
     }
-    // Логика сброса пароля
+    router.push(Routes.SignIn);
   };
 
   return (
     <View style={[blStyles.blCnSpArColumn, forgotPasswordStyles.container]}>
       <View
-        style={[blStyles.blCnSpArColumn, { width: "85%", height: "100%" }]}
+        style={[blStyles.blStCnColum, { width: "85%", height: "100%" }]}
         onTouchStart={Keyboard.dismiss}
       >
-        <Animated.View
+        <View
           style={[
             {
-              marginTop: statusBarHeight,
+              marginTop: statusBarHeight * 2,
             },
             blStyles.blCnRow,
-            { width: "100%" },
-            step === ForgotPasswordStep.RESET_PASSWORD && animatedFocusBlur,
+            signInStyles.header,
           ]}
         >
           <Image
@@ -127,8 +116,8 @@ export default function ForgotPassword() {
           <View style={[blStyles.blCnStColum, { width: "60%" }]}>
             <Text
               style={{
-                ...textStyles.calBCenter,
-                fontSize: 50,
+                ...textStyles.calBStart,
+                fontSize: 30,
                 color: COMMON_COLOR_GREEN,
               }}
             >
@@ -152,9 +141,12 @@ export default function ForgotPassword() {
                 "Enter your new password."}
             </Text>
           </View>
-        </Animated.View>
+        </View>
         <View
-          style={[blStyles.blCnCnColumn, { width: "100%", gap: 10 }]}
+          style={[
+            blStyles.blCnCnColumn,
+            { width: "100%", gap: 10, marginTop: "50%" },
+          ]}
           onTouchStart={(e: GestureResponderEvent) => {
             e.stopPropagation();
           }}
@@ -166,6 +158,8 @@ export default function ForgotPassword() {
                   placeholder="Email"
                   keyboardType="email-address"
                   autoCapitalize="none"
+                  autoCorrect={false}
+                  spellCheck={false}
                   value={form.email.value}
                   onChangeText={(value) => setFieldValue("email", value)}
                   onFocus={() => handleFocusInput("email")}
@@ -205,7 +199,7 @@ export default function ForgotPassword() {
             {step === ForgotPasswordStep.RESET_PASSWORD && (
               <>
                 <InputEnter
-                  placeholder="New Password"
+                  placeholder="New password"
                   secureTextEntry
                   value={form.newPassword.value}
                   onChangeText={(value) => setFieldValue("newPassword", value)}
@@ -220,13 +214,8 @@ export default function ForgotPassword() {
                       : {}
                   }
                 />
-                {form.newPassword.error && (
-                  <Text style={{ color: "red", marginBottom: 10 }}>
-                    {form.newPassword.error}
-                  </Text>
-                )}
                 <InputEnter
-                  placeholder="Confirm Password"
+                  placeholder="Confirm password"
                   secureTextEntry
                   value={form.confirmPassword.value}
                   onChangeText={(value) =>
@@ -243,17 +232,9 @@ export default function ForgotPassword() {
                       : {}
                   }
                 />
-                {form.confirmPassword.error && (
-                  <Text style={{ color: "red", marginBottom: 10 }}>
-                    {form.confirmPassword.error}
-                  </Text>
-                )}
                 <GradientButtonEnter
                   disabled={
-                    !form.newPassword.value ||
-                    !form.confirmPassword.value ||
-                    !!form.newPassword.error ||
-                    !!form.confirmPassword.error
+                    !form.newPassword.value || !form.confirmPassword.value
                   }
                   title="Reset Password"
                   onPress={handleResetPassword}

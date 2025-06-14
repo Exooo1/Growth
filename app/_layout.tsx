@@ -35,6 +35,7 @@ export default function Layout() {
             headerShown: true,
           }}
         />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="index" />
       </Stack>
     </View>

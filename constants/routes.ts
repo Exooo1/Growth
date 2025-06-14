@@ -4,4 +4,10 @@ export enum Routes {
   SignUp = "/auth/signUp",
   ForgotPassword = "/auth/forgotPassword",
   VerifyEmail = "/auth/verifyEmail",
+
+  // Tabs routes
+  Profile = "/(tabs)/profile",
+  Todo = "/(tabs)/todo",
+  Statistics = "/(tabs)/statistics",
+  Management = "/(tabs)/management",
 }

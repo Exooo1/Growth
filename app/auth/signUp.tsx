@@ -1,9 +1,11 @@
 import { PasswordComponent } from "@/components/auth/passwordComponent";
+import { GradientButtonEnter } from "@/components/buttons/GradientButton";
 import { InputEnter } from "@/components/inputs/inputEnter";
 import {
   INITIAL_SIGNUP_STATE,
   SIGNUP_VALIDATION_RULES,
 } from "@/constants/hooks";
+import { LOGO_SIZE } from "@/constants/pages";
 import { Routes } from "@/constants/routes";
 import { useForm } from "@/hooks/useForm";
 import { useErrorsStore } from "@/store/error-store";
@@ -30,177 +32,195 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
 import logo from "../../assets/images/logo.webp";
-import { GradientButtonEnter } from "@/components/buttons/GradientButton";
+import {
+  validateEmail,
+  validateName,
+  validatePassword,
+} from "@/utils/validation";
 
 export default function SignUp() {
   const addError = useErrorsStore((state) => state.addError);
-  const { form, setFieldValue, isValid } = useForm<UserFormData>(
-    INITIAL_SIGNUP_STATE,
-    SIGNUP_VALIDATION_RULES
+  const { form, setFieldValue, validateFields } = useForm<UserFormData>(
+    {
+      name: { value: "", error: "" },
+      surname: { value: "", error: "" },
+      email: { value: "", error: "" },
+      password: { value: "", error: "" },
+    },
+    {
+      name: [(value) => validateName(value, "name")],
+      surname: [(value) => validateName(value, "surname")],
+      email: [validateEmail],
+      password: [validatePassword],
+    }
   );
   const [currentFocus, setCurrentFocus] = useState<string>("");
 
-  const hasError = isValid();
-  const sizeImg = PixelRatio.getPixelSizeForLayoutSize(45);
+  const sizeImg = PixelRatio.getPixelSizeForLayoutSize(LOGO_SIZE);
   const statusBarHeight = useSettingsStore((state) => state.statusBarHeight);
-  const height = useSharedValue(20);
-
-  const animatedFocusBlur = useAnimatedStyle(() => {
-    return {
-      height: withTiming(`${height.value}%`, { duration: 300 }),
-      overflow: "hidden",
-      opacity: height.value === 8 ? 0 : 1,
-    };
-  });
-
-  const scale = useSharedValue(1);
-
-  const animatedScale = useAnimatedStyle(() => {
-    return {
-      transform: [{ scale: withTiming(scale.value, { duration: 400 }) }],
-    };
-  });
-
-  const handleFocus = () => {
-    height.value = 8;
-  };
 
   const handleBlur = () => {
-    height.value = 20;
     setCurrentFocus("");
   };
   const handleFocusInput = (input: string) => {
     setCurrentFocus(input);
-    handleFocus();
   };
+
   const handlerSignUp = () => {
-    if (hasError.length) {
-      addError(hasError, ETypeError.ERROR);
-      return;
-    }
+    const error = validateFields(["name", "surname", "email", "password"]);
+    // if (error) {
+    //   addError(error, ETypeError.ERROR);
+    //   return;
+    // }
     router.push(Routes.VerifyEmail);
   };
 
   return (
     <View style={[signInStyles.container, blStyles.blStCnColum]}>
       <View
-        style={[blStyles.blStCnColum, { width: "85%" }]}
+        style={[blStyles.blCnSpBtColumn, { width: "85%", height: "100%" }]}
         onTouchStart={Keyboard.dismiss}
       >
-        <Animated.View
+        <View
           style={[
+            blStyles.blStCnColum,
             {
-              marginTop: statusBarHeight,
+              width: "100%",
+              height: "85%",
+              gap: "3%",
             },
-            blStyles.blCnRow,
-            signInStyles.header,
-            animatedFocusBlur,
           ]}
         >
-          <Image
-            style={{ width: sizeImg, height: sizeImg }}
-            source={logo as ImageSourcePropType}
-          />
-          <View style={[blStyles.blCnStColum, { width: "55%" }]}>
-            <Text
-              style={{
-                ...textStyles.calBCenter,
-                fontSize: 50,
-                color: COMMON_COLOR_GREEN,
-              }}
-            >
-              Growth
-            </Text>
-            <Text
-              style={{
-                ...textStyles.calStart,
-                fontSize: 15,
-                color: TEXT_COLOR_GREY,
-                width: "100%",
-              }}
-            >
-              Time is your most valuable asset—use it wisely.
-            </Text>
+          <View
+            style={[
+              {
+                marginTop: statusBarHeight * 2,
+              },
+              blStyles.blCnRow,
+              signInStyles.header,
+            ]}
+          >
+            <Image
+              style={{ width: sizeImg, height: sizeImg }}
+              source={logo as ImageSourcePropType}
+            />
+            <View style={[blStyles.blCnStColum, { width: "55%" }]}>
+              <Text
+                style={{
+                  ...textStyles.calBStart,
+                  fontSize: 30,
+                  color: COMMON_COLOR_GREEN,
+                }}
+              >
+                Growth
+              </Text>
+              <Text
+                style={{
+                  ...textStyles.calStart,
+                  fontSize: 15,
+                  color: TEXT_COLOR_GREY,
+                }}
+              >
+                Time is your most valuable asset—use it wisely.
+              </Text>
+            </View>
           </View>
-        </Animated.View>
-        <View
-          style={[blStyles.blCnCnColumn, { width: "100%", gap: 10 }]}
-          onTouchStart={(e: GestureResponderEvent) => {
-            e.stopPropagation();
-          }}
-        >
-          <Text style={[signInStyles.headerText, textStyles.calBStart]}>
-            Sign Up
-          </Text>
-          <View style={[blStyles.blCnStColum, { width: "100%", gap: 12 }]}>
-            <InputEnter
-              placeholder="Name"
-              autoCapitalize="words"
-              value={form.name.value}
-              onChangeText={(value) => setFieldValue("name", value)}
-              onFocus={() => handleFocusInput("name")}
-              onBlur={handleBlur}
-              style={
-                currentFocus === "name"
-                  ? { borderColor: COMMON_COLOR_GREEN_FOCUS, borderWidth: 1.7 }
-                  : {}
-              }
-            />
-            <InputEnter
-              placeholder="Surname"
-              autoCapitalize="words"
-              value={form.surname.value}
-              onChangeText={(value) => setFieldValue("surname", value)}
-              onFocus={() => handleFocusInput("surname")}
-              onBlur={handleBlur}
-              style={
-                currentFocus === "surname"
-                  ? { borderColor: COMMON_COLOR_GREEN_FOCUS, borderWidth: 1.7 }
-                  : {}
-              }
-            />
-            <InputEnter
-              placeholder="Email"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              value={form.email.value}
-              onChangeText={(value) => setFieldValue("email", value)}
-              onFocus={() => handleFocusInput("email")}
-              onBlur={handleBlur}
-              style={
-                currentFocus === "email"
-                  ? { borderColor: COMMON_COLOR_GREEN_FOCUS, borderWidth: 1.7 }
-                  : {}
-              }
-            />
-            <PasswordComponent
-              onFocus={() => handleFocusInput("password")}
-              onBlur={handleBlur}
-              onChangeText={(value) => setFieldValue("password", value)}
-              value={form.password.value}
-              viewStyle={
-                currentFocus === "password"
-                  ? { borderColor: COMMON_COLOR_GREEN_FOCUS, borderWidth: 1.7 }
-                  : {}
-              }
-            />
-            <GradientButtonEnter
-              disabled={
-                // !(form.name.value && form.email.value && form.password.value)
-                false
-              }
-              title="Sign Up"
-              onPress={handlerSignUp}
-            />
+          <View
+            style={[blStyles.blCnCnColumn, { width: "100%", gap: 10 }]}
+            onTouchStart={(e: GestureResponderEvent) => {
+              e.stopPropagation();
+            }}
+          >
+            <Text style={[signInStyles.headerText, textStyles.calBStart]}>
+              Sign Up
+            </Text>
+            <View style={[blStyles.blCnStColum, { width: "100%", gap: 12 }]}>
+              <InputEnter
+                placeholder="Name"
+                autoCapitalize="words"
+                value={form.name.value}
+                onChangeText={(value) => setFieldValue("name", value)}
+                onFocus={() => handleFocusInput("name")}
+                onBlur={handleBlur}
+                autoCorrect={false}
+                spellCheck={false}
+                style={
+                  currentFocus === "name"
+                    ? {
+                        borderColor: COMMON_COLOR_GREEN_FOCUS,
+                        borderWidth: 1.7,
+                      }
+                    : {}
+                }
+              />
+              <InputEnter
+                placeholder="Surname"
+                autoCapitalize="words"
+                value={form.surname.value}
+                onChangeText={(value) => setFieldValue("surname", value)}
+                onFocus={() => handleFocusInput("surname")}
+                onBlur={handleBlur}
+                autoCorrect={false}
+                spellCheck={false}
+                style={
+                  currentFocus === "surname"
+                    ? {
+                        borderColor: COMMON_COLOR_GREEN_FOCUS,
+                        borderWidth: 1.7,
+                      }
+                    : {}
+                }
+              />
+              <InputEnter
+                placeholder="Email"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoCorrect={false}
+                spellCheck={false}
+                value={form.email.value}
+                onChangeText={(value) => setFieldValue("email", value)}
+                onFocus={() => handleFocusInput("email")}
+                onBlur={handleBlur}
+                style={
+                  currentFocus === "email"
+                    ? {
+                        borderColor: COMMON_COLOR_GREEN_FOCUS,
+                        borderWidth: 1.7,
+                      }
+                    : {}
+                }
+              />
+              <PasswordComponent
+                onFocus={() => handleFocusInput("password")}
+                onBlur={handleBlur}
+                onChangeText={(value) => setFieldValue("password", value)}
+                value={form.password.value}
+                viewStyle={
+                  currentFocus === "password"
+                    ? {
+                        borderColor: COMMON_COLOR_GREEN_FOCUS,
+                        borderWidth: 1.7,
+                      }
+                    : {}
+                }
+              />
+              <GradientButtonEnter
+                // disabled={
+                //   !(
+                //     form.email.value &&
+                //     form.password.value &&
+                //     form.name.value &&
+                //     form.surname.value
+                //   )
+                // }
+                title="Sign Up"
+                onPress={handlerSignUp}
+              />
+            </View>
           </View>
         </View>
-        <View style={{ marginTop: "45%" }}>
+        <View style={{ height: "15%" }}>
           <Text style={{ color: TEXT_COLOR_GREY }}>
             Already have an account?
           </Text>
@@ -210,11 +230,15 @@ export default function SignUp() {
             }}
           >
             <Text
-              style={{
-                color: COMMON_COLOR_GREEN,
-                textDecorationLine: "underline",
-                textAlign: "center",
-              }}
+              style={[
+                {
+                  color: COMMON_COLOR_GREEN,
+                  textDecorationLine: "underline",
+                  textAlign: "center",
+                  fontSize: 15,
+                },
+                textStyles.calCenter,
+              ]}
             >
               Sign In
             </Text>

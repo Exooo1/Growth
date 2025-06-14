@@ -31,7 +31,7 @@ export const GradientButtonEnter: React.FC<IGradientButtonEnter> = ({
         style={gradientButtonStyles.gradientButtonEnter}
       >
         <Text
-          style={[textStyles.latoBCenter, { fontSize: 15, color: "white" }]}
+          style={[textStyles.robotoCenter, { fontSize: 15, color: "white" }]}
         >
           {title}
         </Text>

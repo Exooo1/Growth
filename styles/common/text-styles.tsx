@@ -28,6 +28,19 @@ export const textStyles = StyleSheet.create({
     fontFamily: "calibri",
     textAlign: "right",
   },
+  robotoCenter: {
+    fontFamily: "Roboto-Black",
+    textAlign: "center",
+    fontWeight: "bold",
+  },
+  robotoStart: {
+    fontFamily: "Roboto-Black",
+    textAlign: "left",
+  },
+  robotoEnd: {
+    fontFamily: "Roboto-Black",
+    textAlign: "right",
+  },
   latoCenter: {
     fontFamily: "lato",
     textAlign: "center",

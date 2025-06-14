@@ -1,27 +1,22 @@
-export interface FormField {
+export type FormField = {
   value: string;
   error?: string;
-}
+};
 
-export interface UserFormData {
-  [key: string]: FormField;
+export type UserFormData = {
   name: FormField;
   email: FormField;
   password: FormField;
   surname: FormField;
-}
+};
 
-export interface SignInFormData {
+export type SignInFormData = {
   email: FormField;
   password: FormField;
-  [key: string]: FormField;
-}
+};
 
-export type ValidationRule = (
-  value: string,
-  fieldName?: string
-) => string | undefined;
+export type ValidationRule = (value: string, form?: any) => string | undefined;
 
-export interface ValidationRules {
+export type ValidationRules = {
   [key: string]: ValidationRule[];
-}
+};

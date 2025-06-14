@@ -11,6 +11,14 @@ export const validatePassword = (password: string): string | undefined => {
   return undefined;
 };
 
+export const validateConfirmPassword = (
+  value: string,
+  passwordToCompare: string
+): string | undefined => {
+  if (value !== passwordToCompare) return "Passwords do not match";
+  return undefined;
+};
+
 export const validateRequired = (value: string): string | undefined => {
   if (!value) return "This field is required";
   return undefined;

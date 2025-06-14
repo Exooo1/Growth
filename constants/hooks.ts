@@ -3,13 +3,14 @@ import {
   validateEmail,
   validatePassword,
   validateRequired,
+  validateConfirmPassword,
 } from "@/utils/validation";
 import { UserFormData } from "@/types/hooks/form-types";
 import { validateName } from "@/utils/validation";
 
-export const INITIAL_SIGNIN_STATE: SignInFormData = {
-  email: { value: "" },
-  password: { value: "" },
+export const INITIAL_SIGNIN_STATE = {
+  email: { value: "", error: "" },
+  password: { value: "", error: "" },
 };
 
 export const SIGNIN_VALIDATION_RULES = {
@@ -31,9 +32,12 @@ export const SIGNUP_VALIDATION_RULES: ValidationRules = {
   password: [validatePassword],
 };
 
-export const FORGOT_PASSWORD_VALIDATION_RULES: ValidationRules = {
+export const FORGOT_PASSWORD_VALIDATION_RULES = {
   email: [validateEmail],
-  code: [validateRequired],
+  code: [(value: string) => validateRequired(value)],
   newPassword: [validatePassword],
-  // confirmPassword: [validateConfirmPassword],
+  confirmPassword: [
+    (value: string, form: any) =>
+      validateConfirmPassword(value, form.newPassword.value),
+  ],
 };

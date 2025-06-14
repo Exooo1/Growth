@@ -12,12 +12,12 @@ export const useForm = <T extends { [key: string]: FormField }>(
       if (!validationRules || !validationRules[name as string])
         return undefined;
       for (const rule of validationRules[name as string]) {
-        const error = rule(value, name as string);
+        const error = rule(value, form);
         if (error) return error;
       }
       return undefined;
     },
-    [validationRules]
+    [validationRules, form]
   );
 
   const setFieldValue = useCallback(
@@ -27,6 +27,7 @@ export const useForm = <T extends { [key: string]: FormField }>(
       setForm((prev) => ({
         ...prev,
         [name]: {
+          ...(prev[name] as FormField),
           value,
           error,
         },
@@ -35,16 +36,43 @@ export const useForm = <T extends { [key: string]: FormField }>(
     [validateField]
   );
 
-  const isValid = useCallback((): string => {
-    let error = "";
-    for (const field in form) {
-      if (typeof form[field] === "object" && form[field]?.error) {
-        error = form[field]?.error;
-        break;
+  const validateFields = useCallback(
+    (fieldsToValidate: (keyof T)[]): string | undefined => {
+      if (!validationRules) return undefined;
+
+      const newFormState = { ...form };
+      let firstError: string | undefined = undefined;
+
+      for (const fieldName of fieldsToValidate) {
+        const value = form[fieldName].value;
+        const error = validateField(fieldName, value);
+        newFormState[fieldName] = {
+          ...form[fieldName],
+          error,
+        };
+        if (error && !firstError) {
+          firstError = error;
+        }
       }
-    }
-    return error;
-  }, [form]);
+      setForm(newFormState);
+      return firstError;
+    },
+    [form, validationRules, validateField]
+  );
+
+  const isValid = useCallback(
+    (fieldsToValidate: (keyof T)[]): string => {
+      let error = "";
+      for (const field of fieldsToValidate) {
+        if (typeof form[field] === "object" && form[field]?.error) {
+          error = form[field]?.error;
+          break;
+        }
+      }
+      return error;
+    },
+    [form]
+  );
 
   const resetForm = useCallback(() => {
     setForm(initialState);
@@ -54,6 +82,7 @@ export const useForm = <T extends { [key: string]: FormField }>(
     form,
     setFieldValue,
     isValid,
+    validateFields,
     resetForm,
   };
 };

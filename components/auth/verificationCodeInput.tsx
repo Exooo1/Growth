@@ -70,6 +70,7 @@ export const VerificationCodeInput: React.FC<IVerificationCodeInput> = ({
           }}
           style={[
             {
+              fontWeight: "bold",
               borderWidth: digit ? 1.5 : 1,
               borderColor: digit ? COMMON_COLOR_GREEN : TEXT_COLOR_GREY,
             },
